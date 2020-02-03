@@ -24,7 +24,6 @@ func (s * Server) Start(){
 		if err != nil{
 			fmt.Print(err)
 		}
-		fmt.Println("listener",listener)
 		conn ,err :=listener.AcceptTCP()
 		if err != nil{
 			fmt.Print(err)
@@ -33,13 +32,16 @@ func (s * Server) Start(){
 			for {
 				buf := make([]byte,512)
 				cnt, err := conn.Read(buf)
+				fmt.Printf("this is %s is\n",buf)
 				if err != nil{
-					fmt.Print(err)
+					fmt.Printf("read error is %s \n",err)
+					return
 				}
 				if _,err :=conn.Write(buf[:cnt]) ;err != nil{
-					fmt.Print("fail")
+					fmt.Printf("write error is %s\n",err)
+					return
 				}
-				print("success")
+
 			}
 		}()
 	}()
