@@ -1,6 +1,7 @@
 package znet
 
 import (
+	"errors"
 	"fmt"
 	"net"
 	"zinx/ziface"
@@ -13,6 +14,12 @@ type Server struct {
 	Port int
 }
 
+func CallBackToClient(conn *net.TCPConn, data []byte, cnt int) error {
+	if _,err := conn.Write(data[:cnt]); err != nil{
+		return errors.New("call back error")
+	}
+	return nil
+}
 
 func (s * Server) Start(){
 	go func() {
@@ -24,26 +31,19 @@ func (s * Server) Start(){
 		if err != nil{
 			fmt.Print(err)
 		}
-		conn ,err :=listener.AcceptTCP()
-		if err != nil{
-			fmt.Print(err)
-		}
-		go func() {
-			for {
-				buf := make([]byte,512)
-				cnt, err := conn.Read(buf)
-				fmt.Printf("this is %s is\n",buf)
-				if err != nil{
-					fmt.Printf("read error is %s \n",err)
-					return
-				}
-				if _,err :=conn.Write(buf[:cnt]) ;err != nil{
-					fmt.Printf("write error is %s\n",err)
-					return
-				}
-
+		var cid uint32
+		cid = 0
+		for {
+			conn,err := listener.AcceptTCP()
+			if err != nil{
+				fmt.Printf("Accept err %s",err)
+				continue
 			}
-		}()
+			dealConn := NewConnection(conn,cid,CallBackToClient)
+			cid ++
+			go dealConn.start()
+
+		}
 	}()
 
 }
