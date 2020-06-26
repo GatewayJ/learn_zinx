@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-func main(){
-	conn,err := net.Dial("tcp","127.0.0.1:8999")
-	if err!= nil{
+func main() {
+	conn, err := net.Dial("tcp", "127.0.0.1:8999")
+	if err != nil {
 
 		fmt.Println(err)
 	}
@@ -23,7 +23,6 @@ func main(){
 			fmt.Println(err)
 		}
 		fmt.Printf("return content is %s \n", buf)
-		time.Sleep(1*time.Second)
+		time.Sleep(1 * time.Second)
 	}
 }
-

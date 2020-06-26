@@ -11,7 +11,7 @@ type Server struct {
 	IPVersion string
 	IP        string
 	Port      int
-	Router    ziface.IRoute
+	Router    ziface.IRouter
 }
 
 func (s *Server) Start() {
@@ -50,7 +50,7 @@ func (s *Server) Server() {
 	select {}
 }
 
-func (s *Server) AddRouter(router ziface.IRoute) {
+func (s *Server) AddRouter(router ziface.IRouter) {
 	s.Router = router
 	fmt.Println("Add Router Succ")
 }

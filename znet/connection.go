@@ -12,10 +12,10 @@ type Connection struct {
 	isClosed bool
 	HandApi  ziface.HandelFunc
 	ExitChan chan bool
-	Router   ziface.IRoute
+	Router   ziface.IRouter
 }
 
-func NewConnection(conn *net.TCPConn, connID uint32, router ziface.IRoute) *Connection {
+func NewConnection(conn *net.TCPConn, connID uint32, router ziface.IRouter) *Connection {
 	c := &Connection{
 		Conn:     conn,
 		ConnId:   connID,
